@@ -1,5 +1,5 @@
 {
-  "name": "@your-npm-scope/prisma-client",
+  "name": "@clanware/prisma-client",
   "version": "0.0.1",
   "description": "Shared Prisma Client Example",
   "scripts": {
@@ -8,8 +8,8 @@
   },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",
-    "@prisma/client": "^4.15.0",
-    "prisma": "^4.15.0"
+    "@prisma/client": "^5.5.2",
+    "prisma": "^5.5.2"
   },
   "peerDependencies": {
     "@prisma/client": "*",
@@ -22,5 +22,5 @@
     "client/index.d.ts",
     "schema.prisma"
   ],
-  "author": "Igor Mayorov <igolka97@gmail.com>"
+  "author": "cosigyn"
 }
