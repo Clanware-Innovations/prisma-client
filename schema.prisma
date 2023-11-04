@@ -9,15 +9,83 @@ datasource db {
 }
 
 model User {
-	id        String   @id @default(uuid())
-	name      String
-	posts     Post[]
+  id String @id @unique
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  justiceSubmissions JusticeSubmission[]
+  apiToken           String?             @map("api_token")
+
+  @@map("users")
 }
 
-model Post {
-	id        String    @id @default(uuid())
-	title     String
-	content   String
-	author    User      @relation(fields: [authorId], references: [id])
-	authorId  String
+model Member {
+  id      String @id
+  guildId String @map("guild_id")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  guild Guild @relation(fields: [guildId], references: [id])
+  tags  Tag[]
+
+  @@map("members")
+}
+
+model Guild {
+  id String @unique
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  members Member[]
+  tags    Tag[]
+
+  @@map("guilds")
+}
+
+model Tag {
+  id       Int    @id @default(autoincrement())
+  name     String
+  content  String
+  uses     Int    @default(0)
+  guildId  String @map("guild_id")
+  memberId String @map("member_id")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  guild  Guild  @relation(fields: [guildId], references: [id])
+  author Member @relation(fields: [memberId], references: [id])
+
+  @@unique([name, guildId])
+  @@map("tags")
+}
+
+model JusticeSubmission {
+  id     Int    @id @default(autoincrement())
+  userId String @map("member_id")
+
+  type      String  @map("type") // 'xplt' 'dgn' 'appeal'
+  targetId  String  @map("target") @db.VarChar(50)
+  evidence  String? @map("evidence") @db.VarChar(900)
+  notes     String? @map("notes") @db.VarChar(900)
+  status    String  @default("Pending Approval") @map("status")
+  active    Boolean @default(true)
+  messageId String? @map("message_id")
+
+  justiciarVotesFor     String[] @map("justicar_votes_for") // array of user ids
+  justiciarVotesAgainst String[] @map("justicar_votes_against")
+  juryVotesFor          String[] @map("jury_votes_for")
+  juryVotesAgainst      String[] @map("jury_votes_against")
+
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
+  // If active is false, then the resolvedAt is required
+  resolvedAt DateTime? @map("resolved_at")
+
+  author User @relation(fields: [userId], references: [id])
+
+  @@map("justice_submissions")
 }
