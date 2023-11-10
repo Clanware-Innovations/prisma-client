@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id String @id @unique
+  id String @id @unique // Discord user id
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
@@ -21,7 +21,7 @@ model User {
 }
 
 model Member {
-  id      String @id
+  id      String @id // Discord user id
   guildId String @map("guild_id")
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -34,7 +34,7 @@ model Member {
 }
 
 model Guild {
-  id String @unique
+  id String @unique // Discord guild id
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
@@ -88,4 +88,46 @@ model JusticeSubmission {
   author User @relation(fields: [userId], references: [id])
 
   @@map("justice_submissions")
+}
+
+model Clan {
+  robloxGroupId Int     @id @map("roblox_group_id")
+  name          String  @unique @map("name")
+  description   String? @map("description") @db.VarChar(900)
+  robloxOwnerId Int     @map("roblox_owner_id")
+  places        Place[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+}
+
+model Place {
+  id Int @id @default(autoincrement())
+
+  robloxPlaceId Int     @map("roblox_place_id")
+  name          String  @map("name")
+  description   String? @map("description") @db.VarChar(900)
+  clanId        Int     @map("clan_id")
+
+  minPlayers  Int?   @map("min_players")
+  maxPlayers  Int?   @map("max_players")
+  playerRatio String @default("1:1") @map("player_ratio") // defender:raider e.g. 1:3
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  clan      Clan       @relation(fields: [clanId], references: [robloxGroupId])
+  raidTimes RaidTime[]
+}
+
+model RaidTime {
+  id Int @id @default(autoincrement())
+
+  startTime String @map("start_time") // Use HH:mm 24 hour format
+  endTime   String @map("end_time")
+  placeId   Int    @map("place_id")
+
+  place Place @relation(fields: [placeId], references: [id])
+
+  @@map("raid_times")
 }
