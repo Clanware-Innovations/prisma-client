@@ -91,10 +91,10 @@ model JusticeSubmission {
 }
 
 model Clan {
-  robloxGroupId Int     @id @map("roblox_group_id")
+  robloxGroupId String     @id @map("roblox_group_id")
   name          String  @unique @map("name")
   description   String? @map("description") @db.VarChar(900)
-  robloxOwnerId Int     @map("roblox_owner_id")
+  robloxOwnerId String     @map("roblox_owner_id")
   places        Place[]
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -102,12 +102,10 @@ model Clan {
 }
 
 model Place {
-  id Int @id @default(autoincrement())
-
-  robloxPlaceId Int     @map("roblox_place_id")
+  robloxPlaceId String     @map("roblox_place_id") @unique
   name          String  @map("name")
   description   String? @map("description") @db.VarChar(900)
-  clanId        Int     @map("clan_id")
+  clanId        String     @map("clan_id")
 
   minPlayers  Int?   @map("min_players")
   maxPlayers  Int?   @map("max_players")
@@ -125,9 +123,9 @@ model RaidTime {
 
   startTime String @map("start_time") // Use HH:mm 24 hour format
   endTime   String @map("end_time")
-  placeId   Int    @map("place_id")
+  placeId   String    @map("place_id")
 
-  place Place @relation(fields: [placeId], references: [id])
+  place Place @relation(fields: [placeId], references: [robloxPlaceId])
 
   @@map("raid_times")
 }
