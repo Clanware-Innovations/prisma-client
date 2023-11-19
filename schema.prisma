@@ -106,6 +106,7 @@ model Place {
   name          String  @map("name")
   description   String? @map("description") @db.VarChar(900)
   clanId        String     @map("clan_id")
+  iconUrl       String? @map("icon_url") @db.VarChar(900)
 
   minPlayers  Int?   @map("min_players")
   maxPlayers  Int?   @map("max_players")
