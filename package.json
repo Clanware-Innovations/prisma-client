@@ -1,26 +1,22 @@
 {
-  "name": "@clanware/prisma-client",
-  "version": "0.2.1",
-  "description": "Clanware Prisma Client",
-  "scripts": {
-    "migrate": "prisma migrate",
-    "postinstall": "prisma generate"
-  },
-  "devDependencies": {
-    "@prisma/client": "^5.15.0",
-    "dotenv-cli": "^7.2.1",
-    "prisma": "^5.15.0"
-  },
-  "peerDependencies": {
-    "@prisma/client": "*",
-    "prisma": "*"
-  },
-  "main": "client/index.js",
-  "types": "client/index.d.ts",
-  "files": [
-    "client/index.js",
-    "client/index.d.ts",
-    "schema.prisma"
-  ],
-  "author": "cosigyn"
+	"name": "@clanware/prisma-client",
+	"version": "0.2.2",
+	"description": "Clanware Prisma Client",
+	"scripts": {
+		"migrate": "prisma migrate",
+		"postinstall": "prisma generate"
+	},
+	"devDependencies": {
+		"@prisma/client": "^5.15.0",
+		"dotenv-cli": "^7.2.1",
+		"prisma": "^5.15.0"
+	},
+	"peerDependencies": {
+		"@prisma/client": "*",
+		"prisma": "*"
+	},
+	"main": "client/index.js",
+	"types": "client/index.d.ts",
+	"files": ["client/index.js", "client/index.d.ts", "schema.prisma"],
+	"author": "cosigyn"
 }
