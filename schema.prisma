@@ -124,18 +124,6 @@ model JusticeSubmission {
   /// Discord message id associated with the justice submission.
   messageId String? @map("message_id")
 
-  /// List of user ids who voted for the justice submission as justicars.
-  justiciarVotesFor String[] @map("justicar_votes_for")
-
-  /// List of user ids who voted against the justice submission as justicars.
-  justiciarVotesAgainst String[] @map("justicar_votes_against")
-
-  /// List of user ids who voted for the justice submission as jury members.
-  juryVotesFor String[] @map("jury_votes_for")
-
-  /// List of user ids who voted against the justice submission as jury members.
-  juryVotesAgainst String[] @map("jury_votes_against")
-
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
@@ -166,14 +154,15 @@ model Clan {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   /// List of places associated with the clan.
-  places Place[]
-
+  places  Place[]
+  /// List of tier list ratings associated with the clan.
+  ratings TierListRating[]
 }
 
 /// Represents a place in the Discord bot application.
 model Place {
   /// Roblox place id of the place.
-  robloxPlaceId String @map("roblox_place_id") @unique
+  robloxPlaceId String @unique @map("roblox_place_id")
 
   /// Name of the place.
   name String @map("name")
@@ -200,7 +189,7 @@ model Place {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   /// Clan that the place belongs to.
-  clan Clan @relation(fields: [clanId], references: [robloxGroupId])
+  clan      Clan       @relation(fields: [clanId], references: [robloxGroupId])
   raidTimes RaidTime[]
 }
 
@@ -213,14 +202,32 @@ model RaidTime {
   startTime String @map("start_time")
 
   /// The end time of the raid in HH:mm 24-hour format.
-  endTime   String @map("end_time")
+  endTime String @map("end_time")
 
   /// The ID of the place associated with the raid time slot.
-  placeId   String    @map("place_id")
+  placeId String @map("place_id")
 
   /// The place associated with the raid time slot.
   place Place @relation(fields: [placeId], references: [robloxPlaceId])
 
   /// The database table name for the raid times model.
   @@map("raid_times")
+}
+
+model TierListRating {
+  id           Int      @id @default(autoincrement())
+  month        DateTime @default(now())
+  clanId       String
+  skill        Int
+  community    Int
+  activity     Int
+  development  Int
+  organisation Int
+  degeneracy   Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  clan         Clan     @relation(fields: [clanId], references: [robloxGroupId])
+
+  @@unique([month, clanId])
+  @@map("tier_list_ratings")
 }
