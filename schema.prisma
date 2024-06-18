@@ -152,10 +152,8 @@ model Justiciar {
   managementChannelId     String
   roleId                  String
 
-  threads      JusticeThread[]
-  identities   JusticiarIdentity[]
-  votesFor     JusticeSubmission[] @relation("VotesFor")
-  votesAgainst JusticeSubmission[] @relation("VotesAgainst")
+  threads    JusticeThread[]
+  identities JusticiarIdentity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
