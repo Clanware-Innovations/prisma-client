@@ -157,10 +157,11 @@ model Justiciar {
 }
 
 model JusticeThread {
-  id          Int       @id @default(autoincrement())
-  threadId    String
-  justiciar   Justiciar @relation(fields: [justiciarId], references: [id])
-  justiciarId Int
+  id           Int        @id @default(autoincrement())
+  threadId     String
+  justiciar    Justiciar? @relation(fields: [justiciarId], references: [id])
+  justiciarId  Int?
+  isManagement Boolean    @default(false)
 
   submissionId Int
 
