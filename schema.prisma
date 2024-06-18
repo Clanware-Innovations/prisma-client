@@ -146,8 +146,8 @@ model Justiciar {
   mainChannelId           String
   mainChannelWebhookId    String
   mainChannelWebhookToken String
-  managementChannelId         String
-  roleId                     String
+  managementChannelId     String
+  roleId                  String
 
   threads    JusticeThread[]
   identities JusticiarIdentity[]
@@ -162,8 +162,7 @@ model JusticeThread {
   justiciar   Justiciar @relation(fields: [justiciarId], references: [id])
   justiciarId Int
 
-  webhookId    String
-  webhookToken String
+  submissionId Int
 
   createdAt DateTime @default(now())
 }
