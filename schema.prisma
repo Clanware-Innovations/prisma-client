@@ -146,7 +146,8 @@ model Justiciar {
   mainChannelId           String
   mainChannelWebhookId    String
   mainChannelWebhookToken String
-  leaderChannelId         String
+  managementChannelId         String
+  roleId                     String
 
   threads    JusticeThread[]
   identities JusticiarIdentity[]
