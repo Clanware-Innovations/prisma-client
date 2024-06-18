@@ -136,98 +136,53 @@ model JusticeSubmission {
   @@map("justice_submissions")
 }
 
-/// Represents a clan in the Discord bot application.
-model Clan {
-  /// Roblox group id of the clan.
-  robloxGroupId String @id @map("roblox_group_id")
+model Justiciar {
+  id String @id @default(cuid())
+  discordId String
+  realName String
+  avatarUrl String
 
-  /// Name of the clan.
-  name String @unique @map("name")
+  categoryId String
+  mainChannelId String
+  mainChannelWebhookId String
+  mainChannelWebhookToken String
+  leaderChannelId String
 
-  /// Description of the clan.
-  description String? @map("description") @db.VarChar(900)
+  threads JusticeThread[]
+  identities JusticiarIdentity[]
 
-  /// Roblox owner id of the clan.
-  robloxOwnerId String @map("roblox_owner_id")
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-
-  /// List of places associated with the clan.
-  places  Place[]
-  /// List of tier list ratings associated with the clan.
-  ratings TierListRating[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-/// Represents a place in the Discord bot application.
-model Place {
-  /// Roblox place id of the place.
-  robloxPlaceId String @unique @map("roblox_place_id")
+model JusticeThread {
+  id String @id @default(cuid())
+  threadId String
+  justiciar Justiciar @relation(fields: [justiciarId], references: [id])
+  justiciarId String
 
-  /// Name of the place.
-  name String @map("name")
+  webhookId String
+  webhookToken String
 
-  /// Description of the place.
-  description String? @map("description") @db.VarChar(900)
-
-  /// Clan id associated with the place.
-  clanId String @map("clan_id")
-
-  /// Icon URL of the place.
-  iconUrl String? @map("icon_url") @db.VarChar(900)
-
-  /// Minimum number of players required for the place.
-  minPlayers Int? @map("min_players")
-
-  /// Maximum number of players allowed in the place.
-  maxPlayers Int? @map("max_players")
-
-  /// Player ratio for the place (defender:raider).
-  playerRatio String @default("1:1") @map("player_ratio")
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-
-  /// Clan that the place belongs to.
-  clan      Clan       @relation(fields: [clanId], references: [robloxGroupId])
-  raidTimes RaidTime[]
+  createdAt DateTime @default(now())
 }
 
-/// Represents a raid time slot.
-model RaidTime {
-  /// The unique identifier for the raid time slot.
+model JusticiarIdentity {
+  id String @id @default(cuid())
+  justiciarId String
+  identityId Int
+  justiciar Justiciar @relation(fields: [justiciarId], references: [id])
+  identity AnonymousIdentity @relation(fields: [identityId], references: [id])
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+}
+model AnonymousIdentity {
   id Int @id @default(autoincrement())
+  name String
 
-  /// The start time of the raid in HH:mm 24-hour format.
-  startTime String @map("start_time")
+  justiciarIdentities JusticiarIdentity[]
 
-  /// The end time of the raid in HH:mm 24-hour format.
-  endTime String @map("end_time")
-
-  /// The ID of the place associated with the raid time slot.
-  placeId String @map("place_id")
-
-  /// The place associated with the raid time slot.
-  place Place @relation(fields: [placeId], references: [robloxPlaceId])
-
-  /// The database table name for the raid times model.
-  @@map("raid_times")
-}
-
-model TierListRating {
-  id           Int      @id @default(autoincrement())
-  month        DateTime @default(now())
-  clanId       String
-  skill        Int
-  community    Int
-  activity     Int
-  development  Int
-  organisation Int
-  degeneracy   Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  clan         Clan     @relation(fields: [clanId], references: [robloxGroupId])
-
-  @@unique([month, clanId])
-  @@map("tier_list_ratings")
+  avatarUrl String
 }
