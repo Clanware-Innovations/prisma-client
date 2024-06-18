@@ -124,8 +124,8 @@ model JusticeSubmission {
   /// Discord message id associated with the justice submission.
   messageId String? @map("message_id")
 
-  votesFor     Justiciar[] @relation("VotesFor")
-  votesAgainst Justiciar[] @relation("VotesAgainst")
+  votesFor     String[]
+  votesAgainst String[]
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
