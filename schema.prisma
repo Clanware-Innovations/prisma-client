@@ -137,18 +137,18 @@ model JusticeSubmission {
 }
 
 model Justiciar {
-  id String @id @default(cuid())
+  id        Int    @id @default(autoincrement())
   discordId String
-  realName String
+  realName  String
   avatarUrl String
 
-  categoryId String
-  mainChannelId String
-  mainChannelWebhookId String
+  categoryId              String
+  mainChannelId           String
+  mainChannelWebhookId    String
   mainChannelWebhookToken String
-  leaderChannelId String
+  leaderChannelId         String
 
-  threads JusticeThread[]
+  threads    JusticeThread[]
   identities JusticiarIdentity[]
 
   createdAt DateTime @default(now())
@@ -156,30 +156,31 @@ model Justiciar {
 }
 
 model JusticeThread {
-  id String @id @default(cuid())
-  threadId String
-  justiciar Justiciar @relation(fields: [justiciarId], references: [id])
-  justiciarId String
+  id          Int       @id @default(autoincrement())
+  threadId    String
+  justiciar   Justiciar @relation(fields: [justiciarId], references: [id])
+  justiciarId Int
 
-  webhookId String
+  webhookId    String
   webhookToken String
 
   createdAt DateTime @default(now())
 }
 
 model JusticiarIdentity {
-  id String @id @default(cuid())
-  justiciarId String
-  identityId Int
-  justiciar Justiciar @relation(fields: [justiciarId], references: [id])
-  identity AnonymousIdentity @relation(fields: [identityId], references: [id])
+  id          Int               @id @default(autoincrement())
+  justiciarId Int
+  identityId  Int
+  justiciar   Justiciar         @relation(fields: [justiciarId], references: [id])
+  identity    AnonymousIdentity @relation(fields: [identityId], references: [id])
 
   active Boolean @default(true)
 
   createdAt DateTime @default(now())
 }
+
 model AnonymousIdentity {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String
 
   justiciarIdentities JusticiarIdentity[]
