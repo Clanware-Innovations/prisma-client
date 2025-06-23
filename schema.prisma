@@ -191,3 +191,13 @@ model AnonymousIdentity {
 
   avatarUrl String
 }
+
+model MetricEvent {
+  id         Int      @id @default(autoincrement())
+  type       String   // e.g. 'command', 'error', 'guild_join', 'guild_leave', 'performance', 'feature'
+  name       String?  // e.g. command name, feature name, error type
+  userId     String?  // Discord user id (if applicable)
+  guildId    String?  // Discord guild id (if applicable)
+  data       Json?    // Any extra data (e.g. error stack, performance numbers)
+  createdAt  DateTime @default(now())
+}

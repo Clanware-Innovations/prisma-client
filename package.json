@@ -1,6 +1,6 @@
 {
 	"name": "@clanware/prisma-client",
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"description": "Clanware Prisma Client",
 	"scripts": {
 		"migrate": "prisma migrate",
