@@ -201,3 +201,26 @@ model MetricEvent {
   data       Json?    // Any extra data (e.g. error stack, performance numbers)
   createdAt  DateTime @default(now())
 }
+
+model Ticket {
+  id           String   @id @default(uuid())
+  creatorId    String
+  type         String
+  status       String   // 'open' or 'closed'
+  createdAt    DateTime @default(now())
+  closedAt     DateTime?
+  channelId    String
+  participants String[] // Array of user IDs
+  closeReason  String?
+  transcripts  Transcript[]
+}
+
+model Transcript {
+  id         String   @id @default(uuid())
+  ticketId   String
+  message    String
+  createdAt  DateTime @default(now())
+  userId     String
+  attachments String[] // Array of attachment URLs
+  ticket     Ticket   @relation(fields: [ticketId], references: [id])
+}
